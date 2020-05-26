@@ -81,6 +81,8 @@ public class Main {
         newLine(sb);
         sb.append("####Commit记录");
         newLine(sb);
+        sb.append("####Issue链接");
+        newLine(sb);
         sb.append("##2. PM报告");
         newLine(sb);
         generateBeta工作量表(m,sb,7);
