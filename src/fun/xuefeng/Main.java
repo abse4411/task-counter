@@ -38,7 +38,7 @@ public class Main {
                 strs = reader.readLine().split(" ");
                 data.memName[i]=strs[0];
                 data.memTotPoint[i]=Double.parseDouble(strs[1]);
-                data.sumPoint+=data.memTotPoint[i];
+                //data.sumPoint+=data.memTotPoint[i];
             }
             data.dayCount =Integer.parseInt(reader.readLine());
             data.memDayPoint =new double[data.dayCount][data.memberCount];
@@ -51,7 +51,8 @@ public class Main {
                 String[][] record=new String[data.memberCount][];
                 for (int j = 0; j < data.memberCount; j++) {
                     record[j]=reader.readLine().split("#");
-                    data.memDayPoint[i][j]=Integer.parseInt(record[j][1]);
+                    data.memDayPoint[i][j]=Double.parseDouble(record[j][1]);
+                    data.sumPoint+=data.memDayPoint[i][j];
                     data.menDayAccumPoint[i][j]=preMemDayAccumPoint[j]+data.memDayPoint[i][j];
                     preDayAccumPoint+=data.memDayPoint[i][j];
                     preMemDayAccumPoint[j]=data.menDayAccumPoint[i][j];
@@ -98,13 +99,13 @@ public class Main {
     private static void generate会议记录表(MetaData m,StringBuffer sb){
         sb.append(format("####会议记录表(%s)",m.startDate.plusDays(m.dayCount-1)));
         newLine(sb);
-        sb.append("组员|昨天完成的任务|昨天花了多少时间|还剩余多少时间|遇到什么困难|今天解决的进度|明天的计划");
+        sb.append("组员|昨天完成的任务|今天花了多少时间|还剩余多少时间|遇到什么困难|今天解决的进度|明天的计划");
         newLine(sb);
         sb.append(":--|:--|:--|:--|:--|:--|:--");
         newLine(sb);
         String[][] record = m.map.get(m.dayCount - 1);
         for (int i = 0; i < m.memberCount; i++) {
-            sb.append(format("%s|%s|%.2f|%s|%s|%s|%s",
+            sb.append(format("%s|%s|%.1f|%s|%s|%s|%s",
                 m.memName[i],
                 record[i][0],
                 m.memDayPoint[m.dayCount -1][i],
@@ -147,19 +148,17 @@ public class Main {
     private static void generateBeta成员贡献比表(MetaData m,StringBuffer sb){
         sb.append("####成员贡献比");
         newLine(sb);
-        sb.append("组员|昨天完成的任务|昨天完成的任务量（小时）|累计完成的任务量（小时）|昨天贡献比|累计贡献比");
+        sb.append("组员|今天完成的任务量（小时）|累计完成的任务量（小时）|今天贡献比|累计贡献比");
         newLine(sb);
-        sb.append(":--|:--|:--|:--|:--|:--");
+        sb.append(":--|:--|:--|:--|:--");
         newLine(sb);
-        String[][] record = m.map.get(m.dayCount - 1);
         for (int i = 0; i < m.memberCount; i++) {
-            sb.append(format("%s|%s|%.2f|%.2f|%.3f|%.3f",
+            sb.append(format("%s|%.1f|%.1f|%2.2f%%|%2.2f%%",
                 m.memName[i],
-                record[i][0],
                 m.memDayPoint[m.dayCount -1][i],
                 m.menDayAccumPoint[m.dayCount -1][i],
-                m.memDayPoint[m.dayCount -1][i]/m.sumPoint,
-                m.menDayAccumPoint[m.dayCount -1][i]/m.sumPoint));
+                100*m.memDayPoint[m.dayCount -1][i]/m.sumPoint,
+                100*m.menDayAccumPoint[m.dayCount -1][i]/m.sumPoint));
             newLine(sb);
         }
     }
