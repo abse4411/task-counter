@@ -9,12 +9,19 @@ import java.util.Map;
 
 public class Main {
     static class MetaData{
+        //成员数量、已冲刺天数
         int memberCount, dayCount;
+        //成员姓名
         String[] memName;
+        //每个成员总工作量，所有成员当日累计工作量
         double[] memTotPoint, dayAccumPoint;
+        //总工作量=Sum(每个成员总工作量)
         double sumPoint=0;
+        //冲刺开始日期
         LocalDate startDate;
+        //成员当日工作量，成员当日累计工作量
         double[][] memDayPoint, menDayAccumPoint;
+        //所有成员当日的昨天完成的任务、昨天花了多少时间、还剩余多少时间、遇到什么困难、今天解决的进度、明天的计划
         Map<Integer,String[][]> map;
     }
 
@@ -80,8 +87,6 @@ public class Main {
         newLine(sb);
         sb.append("####燃尽图 - 以任务卡片数量为单位");
         newLine(sb);
-        sb.append("####燃尽图 - 以工作量（小时）为单位");
-        newLine(sb);
         sb.append("####任务总量变化线");
         newLine(sb);
         generateBeta成员贡献比表(m,sb);
@@ -146,9 +151,11 @@ public class Main {
         newLine(sb);
         sb.append(":--|:--|:--|:--|:--|:--");
         newLine(sb);
+        String[][] record = m.map.get(m.dayCount - 1);
         for (int i = 0; i < m.memberCount; i++) {
-            sb.append(format("%s||%.2f|%.2f|%.3f|%.3f",
+            sb.append(format("%s|%s|%.2f|%.2f|%.3f|%.3f",
                 m.memName[i],
+                record[i][0],
                 m.memDayPoint[m.dayCount -1][i],
                 m.menDayAccumPoint[m.dayCount -1][i],
                 m.memDayPoint[m.dayCount -1][i]/m.sumPoint,
