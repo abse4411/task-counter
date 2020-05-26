@@ -152,12 +152,18 @@ public class Main {
         newLine(sb);
         sb.append(":--|:--|:--|:--|:--");
         newLine(sb);
+        double curDayTotPoint;
+        if(m.dayCount-1==0){
+            curDayTotPoint=m.dayAccumPoint[m.dayCount-1];
+        }else{
+            curDayTotPoint=m.dayAccumPoint[m.dayCount-1]-m.dayAccumPoint[m.dayCount-2];
+        }
         for (int i = 0; i < m.memberCount; i++) {
             sb.append(format("%s|%.1f|%.1f|%2.2f%%|%2.2f%%",
                 m.memName[i],
                 m.memDayPoint[m.dayCount -1][i],
                 m.menDayAccumPoint[m.dayCount -1][i],
-                100*m.memDayPoint[m.dayCount -1][i]/m.sumPoint,
+                100*m.memDayPoint[m.dayCount -1][i]/curDayTotPoint,
                 100*m.menDayAccumPoint[m.dayCount -1][i]/m.sumPoint));
             newLine(sb);
         }
